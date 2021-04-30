@@ -64,10 +64,13 @@ info.onCountdownEnd(function () {
     game.over(true)
 })
 function startLevel2 () {
+    scene.setBackgroundColor(15)
     tiles.setTilemap(tilemap`level1`)
     mySprite.setPosition(70, 34)
     mySprite.say("ME WANT MORE", 1500)
     mySprite.startEffect(effects.fire, 500)
+    controller.moveSprite(mySprite)
+    scene.cameraFollowSprite(mySprite)
     for (let index = 0; index < 20; index++) {
         taco = sprites.create(img`
             . . . . . . . e e e e . . . . . 
@@ -185,22 +188,18 @@ pause(2000)
 game.splash("Collect 10 Tacos")
 effects.blizzard.endScreenEffect()
 startLevel1()
-game.onUpdateInterval(100, function () {
+forever(function () {
     if (info.score() == 10) {
-        if (level2check == 0) {
-            level2check += 1
-            game.splash("Collect 20 Tacos")
-            startLevel2()
-        }
+        level2check += 1
+        game.splash("Collect 20 Tacos")
+        startLevel2()
     }
     if (info.score() == 30) {
-        if (level3check == 0) {
-            level3check += 1
-            game.showLongText("The Taco Dungeons have been cleared!", DialogLayout.Center)
-            music.baDing.play()
-            enemy1.setFlag(SpriteFlag.AutoDestroy, true)
-            game.splash("Avoid the Evil Mega Taco until the timer runs out!")
-            startLevel3()
-        }
+        level3check += 1
+        game.showLongText("The Taco Dungeons have been cleared!", DialogLayout.Center)
+        music.baDing.play()
+        enemy1.setFlag(SpriteFlag.AutoDestroy, true)
+        game.splash("Avoid the Evil Mega Taco until the timer runs out!")
+        startLevel3()
     }
 })
