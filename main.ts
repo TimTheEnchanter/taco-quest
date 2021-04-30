@@ -54,7 +54,7 @@ function startLevel1 () {
             . 4 5 4 5 5 4 e . . . . . . . . 
             . . 4 4 e e e . . . . . . . . . 
             `, SpriteKind.Food)
-        taco.setPosition(randint(10, 150), randint(10, 110))
+        taco.setPosition(randint(15, 250), randint(15, 220))
         music.pewPew.play()
         pause(2000)
     }
@@ -87,7 +87,7 @@ function startLevel2 () {
             . 4 5 4 5 5 4 e . . . . . . . . 
             . . 4 4 e e e . . . . . . . . . 
             `, SpriteKind.Food)
-        taco.setPosition(randint(10, 150), randint(10, 110))
+        taco.setPosition(randint(15, 250), randint(15, 220))
         music.pewPew.play()
         pause(1500)
         enemy1 = sprites.create(img`
