@@ -173,6 +173,8 @@ let eviltaco: Sprite = null
 let enemy1: Sprite = null
 let taco: Sprite = null
 let mySprite: Sprite = null
+let level2check = 0
+let level3check = 0
 game.splash("Taco Quest", "By James")
 effects.blizzard.startScreenEffect()
 pause(1000)
@@ -185,14 +187,20 @@ effects.blizzard.endScreenEffect()
 startLevel1()
 game.onUpdateInterval(100, function () {
     if (info.score() == 10) {
-        game.splash("Collect 20 Tacos")
-        startLevel2()
+        if (level2check == 0) {
+            level2check += 1
+            game.splash("Collect 20 Tacos")
+            startLevel2()
+        }
     }
     if (info.score() == 30) {
-        game.showLongText("The Taco Dungeons have been cleared!", DialogLayout.Center)
-        music.baDing.play()
-        enemy1.setFlag(SpriteFlag.AutoDestroy, true)
-        game.splash("Avoid the Evil Mega Taco until the timer runs out!")
-        startLevel3()
+        if (level3check == 0) {
+            level3check += 1
+            game.showLongText("The Taco Dungeons have been cleared!", DialogLayout.Center)
+            music.baDing.play()
+            enemy1.setFlag(SpriteFlag.AutoDestroy, true)
+            game.splash("Avoid the Evil Mega Taco until the timer runs out!")
+            startLevel3()
+        }
     }
 })
