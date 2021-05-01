@@ -54,7 +54,7 @@ function startLevel1 () {
             . 4 5 4 5 5 4 e . . . . . . . . 
             . . 4 4 e e e . . . . . . . . . 
             `, SpriteKind.Food)
-        taco.setPosition(randint(15, 250), randint(15, 220))
+        taco.setPosition(randint(15, 230), randint(15, 220))
         music.pewPew.play()
         pause(2000)
     }
@@ -90,7 +90,7 @@ function startLevel2 () {
             . 4 5 4 5 5 4 e . . . . . . . . 
             . . 4 4 e e e . . . . . . . . . 
             `, SpriteKind.Food)
-        taco.setPosition(randint(15, 250), randint(15, 220))
+        taco.setPosition(randint(15, 230), randint(15, 220))
         music.pewPew.play()
         pause(1500)
         enemy1 = sprites.create(img`
@@ -111,7 +111,7 @@ function startLevel2 () {
             . . . . . . 6 6 6 6 . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, SpriteKind.Enemy)
-        enemy1.setPosition(randint(10, 150), randint(10, 110))
+        enemy1.setPosition(randint(15, 230), randint(15, 220))
         enemy1.setBounceOnWall(true)
         enemy1.setVelocity(randint(-100, 100), randint(-100, 100))
         enemy1.lifespan = 4500
@@ -123,10 +123,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     otherSprite.destroy()
 })
 function startLevel3 () {
+    scene.setBackgroundColor(15)
     tiles.setTilemap(tilemap`level1`)
     mySprite.setPosition(70, 34)
     mySprite.say("TACO MAD", 1500)
     mySprite.startEffect(effects.fire, 500)
+    controller.moveSprite(mySprite)
+    scene.cameraFollowSprite(mySprite)
     eviltaco = sprites.create(img`
         ..............eeeeeee...........
         ............ee455662e2e.........
@@ -162,9 +165,11 @@ function startLevel3 () {
         ................................
         `, SpriteKind.boss)
     eviltaco.setBounceOnWall(true)
-    eviltaco.setPosition(randint(10, 150), randint(10, 110))
-    info.startCountdown(20)
+    eviltaco.setPosition(randint(15, 230), randint(15, 220))
     eviltaco.setVelocity(randint(-100, 100), randint(-100, 100))
+    eviltaco.ax += 100
+    eviltaco.ay += 100
+    info.startCountdown(20)
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
@@ -176,30 +181,26 @@ let eviltaco: Sprite = null
 let enemy1: Sprite = null
 let taco: Sprite = null
 let mySprite: Sprite = null
-let level2check = 0
-let level3check = 0
 game.splash("Taco Quest", "By James")
+let level3check = 0
 effects.blizzard.startScreenEffect()
+pause(500)
+story.printText("Do you know what time it is?", 20, 0, 1, 0, story.TextSpeed.Fast)
+pause(500)
+story.printText("TACO TIME", 20, 20, 1, 0, story.TextSpeed.VeryFast)
 pause(1000)
-story.printText("Do you know what time it is?", 20, 0, 1, 0, story.TextSpeed.Slow)
-pause(1000)
-story.printText("TACO TIME", 20, 20, 1, 0, story.TextSpeed.Normal)
-pause(2000)
 game.splash("Collect 10 Tacos")
 effects.blizzard.endScreenEffect()
 startLevel1()
 forever(function () {
-    if (info.score() == 10) {
-        level2check += 1
-        game.splash("Collect 20 Tacos")
-        startLevel2()
-    }
-    if (info.score() == 30) {
-        level3check += 1
-        game.showLongText("The Taco Dungeons have been cleared!", DialogLayout.Center)
-        music.baDing.play()
-        enemy1.setFlag(SpriteFlag.AutoDestroy, true)
-        game.splash("Avoid the Evil Mega Taco until the timer runs out!")
-        startLevel3()
+    if (level3check == 0) {
+        if (info.score() == 10) {
+            game.splash("Collect 20 Tacos")
+            startLevel2()
+        } else if (info.score() == 30) {
+            game.splash("Avoid the Evil Mega Taco until the timer runs out!")
+            level3check += 1
+            startLevel3()
+        }
     }
 })
